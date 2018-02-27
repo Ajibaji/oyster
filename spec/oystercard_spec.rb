@@ -48,6 +48,15 @@ describe Oystercard do
       expect(subject.touch_in).to eq(true)
     end
 
-
   end
+
+  describe '#touch_out' do
+    subject(:oystercard) { Oystercard.new(1) }
+
+    it 'should return false if oystercard is touched out' do
+      expect(subject.touch_out).to eq(false)
+    end
+    
+  end
+
 end
