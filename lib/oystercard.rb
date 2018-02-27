@@ -26,6 +26,7 @@ MIN_FARE = 1
     @in_journey
   end
 
+  private
   def transaction(amount)
     raise "max balance is #{BALANCE_LIMIT}" if (@balance + amount) > BALANCE_LIMIT
     raise "insufficient funds: current balance is #{@balance}" if (@balance + amount) < 0

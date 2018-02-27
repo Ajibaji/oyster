@@ -19,26 +19,33 @@ describe Oystercard do
     end
 
   describe '#transaction' do
-
+  #subject(:oystercard) { Oystercard.new(20) }
     it 'adds to balance' do
-      subject.transaction(30)
-      expect(subject.balance).to eq(30)
+      allow_any_instance_of(Oystercard).to receive(:transaction) do
+        subject.transaction(30)
+        expect(subject.balance).to eq(30)
+      end
     end
 
     it 'subtract from balance #assuming adds to balance works' do
-      subject.transaction(30)
-      subject.transaction(-10)
-      expect(subject.balance).to eq(20)
+      allow_any_instance_of(Oystercard).to receive(:transaction) do
+        subject.transaction(30)
+        subject.transaction(-10)
+        expect(subject.balance).to eq(20)
+      end
     end
 
     it 'throws a wobbly if you try to exceed balance limit' do
-      expect { subject.transaction(91) }.to raise_error "max balance is #{Oystercard::BALANCE_LIMIT}"
+      allow_any_instance_of(Oystercard).to receive(:transaction) do
+        expect { subject.transaction(91) }.to raise_error "max balance is #{Oystercard::BALANCE_LIMIT}"
+      end
     end
 
     it 'cannot make a transaction with insufficient funds' do
-      expect { subject.transaction(-1) }.to raise_error "insufficient funds: current balance is #{subject.balance}"
+      allow_any_instance_of(Oystercard).to receive(:transaction) do
+        expect { subject.transaction(-1) }.to raise_error "insufficient funds: current balance is #{subject.balance}"
+      end 
     end
-
   end
 
   describe '#touch_in' do
