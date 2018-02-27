@@ -48,6 +48,11 @@ describe Oystercard do
       expect(subject.touch_in).to eq(true)
     end
 
+    it 'should raise an error if card has insufficient balance' do
+      subject.balance = 0
+      expect { subject.touch_in }.to raise_error "insufficient funds for this journey"
+    end
+
   end
 
   describe '#touch_out' do
