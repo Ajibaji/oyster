@@ -58,10 +58,16 @@ describe Oystercard do
   describe '#touch_out' do
     subject(:oystercard) { Oystercard.new(1) }
 
-    it 'should return false if oystercard is touched out' do
-      expect(subject.touch_out).to eq(false)
+    it 'should return false in ostercard is touched out' do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey).to eq(false)
     end
 
+    it 'should deduct MIN_FARE from balance and return balance' do
+      subject.touch_in
+      expect { subject.touch_out }.to change{subject.balance}.by(-1)
+    end
   end
 
   describe '#in_journey?' do
