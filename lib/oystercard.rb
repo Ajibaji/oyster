@@ -4,6 +4,7 @@ BALANCE_LIMIT = 90
 
   def initialize(initial_balance = 0)
     @balance = initial_balance
+    @in_journey = false
   end
 
   def transaction(amount)
@@ -12,4 +13,11 @@ BALANCE_LIMIT = 90
     @balance += amount
   end
 
+  def touch_in
+    @in_journey = true
+  end
+
+  def in_journey?
+    @in_journey
+  end
 end

@@ -1,28 +1,22 @@
 require 'oystercard'
 
 describe Oystercard do
-  subject(:oystercard) { Oystercard.new }
+  subject(:oystercard) { Oystercard.new } #gives fresh instance of Oystercard
 
-  describe 'creation of Oystercards' do
-
-    context 'created without parameter' do
+    context 'created without initial balance' do
 
       it 'default balance is 0' do
         expect(subject.balance).to eq(0)
       end
-
     end
 
-    context 'created with parameter' do
+    context 'created with set initial balance' do
       subject(:oystercard) { Oystercard.new(20) }
-
-      it 'sets parameter to balance' do
+      it 'sets parameter to initial balance' do
         expect(subject.balance).to eq(20)
       end
 
     end
-
-  end
 
   describe '#transaction' do
 
@@ -47,4 +41,13 @@ describe Oystercard do
 
   end
 
+  describe '#touch_in' do
+    subject(:oystercard) { Oystercard.new(1) }
+
+    it 'should return true if oystercard is touched in' do
+      expect(subject.touch_in).to eq(true)
+    end
+
+
+  end
 end
