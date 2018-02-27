@@ -56,7 +56,14 @@ describe Oystercard do
     it 'should return false if oystercard is touched out' do
       expect(subject.touch_out).to eq(false)
     end
-    
+
   end
 
+  describe '#in_journey?' do
+    subject(:oystercard) { Oystercard.new(1) }
+    it 'should return the value of in_journey instance variable' do
+      subject.touch_in
+      expect(subject.in_journey?).to eq(true)
+    end
+  end
 end
