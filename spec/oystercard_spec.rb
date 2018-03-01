@@ -44,7 +44,7 @@ describe Oystercard do
     it 'cannot make a transaction with insufficient funds' do
       allow_any_instance_of(Oystercard).to receive(:transaction) do
         expect { subject.transaction(-1) }.to raise_error "insufficient funds: current balance is #{subject.balance}"
-      end 
+      end
     end
   end
 
@@ -52,36 +52,70 @@ describe Oystercard do
     subject(:oystercard) { Oystercard.new(1) }
 
     it 'should return true if oystercard is touched in' do
-      expect(subject.touch_in).to eq(true)
+      expect(subject.touch_in(entry_station)).to eq(true)
     end
 
     it 'should raise an error if card has insufficient balance' do
       subject.balance = 0
-      expect { subject.touch_in }.to raise_error "insufficient funds for this journey"
+      expect { subject.touch_in(entry_station) }.to raise_error "insufficient funds for this journey"
+    end
+
+    let(:entry_station){ double :entry_station }
+    it 'should remember the entry station after touch_in' do
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq(entry_station)
     end
 
   end
 
   describe '#touch_out' do
     subject(:oystercard) { Oystercard.new(1) }
+    let(:entry_station){ double :entry_station }
+    let(:exit_station){ double :exit_station }
 
-    it 'should return false in ostercard is touched out' do
-      subject.touch_in
-      subject.touch_out
+    it 'should return nil if oystercard is touched out' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
       expect(subject.in_journey).to eq(false)
     end
 
     it 'should deduct MIN_FARE from balance and return balance' do
-      subject.touch_in
-      expect { subject.touch_out }.to change{subject.balance}.by(-1)
+      subject.touch_in(entry_station)
+      expect { subject.touch_out(exit_station) }.to change{subject.balance}.by(-1)
+    end
+
+    it 'should set @in_journey to nil once touched out' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.entry_station).to be_nil
     end
   end
 
   describe '#in_journey?' do
     subject(:oystercard) { Oystercard.new(1) }
+    let(:station){ double :station }
+
     it 'should return the value of in_journey instance variable' do
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject.in_journey?).to eq(true)
     end
   end
+
+  describe '#journeys' do
+    subject(:oystercard) { Oystercard.new(1) }
+
+    it 'should check that an empty array of journeys has been created' do
+      expect(subject.journeys_log).to be_empty
+    end
+
+    let(:entry_station){ double :entry_station }
+    let(:exit_station){ double :exit_station }
+    it 'should store journey in a hash on touch_out' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.last_journey.nil?).to eq(true)
+    end
+
+  end
+
 end
