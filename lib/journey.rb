@@ -31,6 +31,10 @@ class Journey
     @entry_station = nil
   end
 
+  def fare
+    !@entry_station.nil? && !@exit_station.nil? ? $MIN_FARE : $PENALTY_FARE
+  end
+
   def in_journey?
     !!@entry_station
   end

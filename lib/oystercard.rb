@@ -7,6 +7,7 @@ attr_accessor :card
 
 $BALANCE_LIMIT = 90
 $MIN_FARE = 1
+$PENALTY_FARE = 6
 
   def initialize(initial_balance = 0)
     @balance = initial_balance
