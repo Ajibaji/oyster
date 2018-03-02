@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
-ruby "2.4.1"
+ruby "2.5.0"
 
 gem 'rubocop'
+
+gem 'simplecov', require: false, group: :test
 
 group :test do
   gem 'rspec'
