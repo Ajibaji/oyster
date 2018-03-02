@@ -20,7 +20,7 @@ describe Journey do
     end
 
     it 'should remember the entry station after touch_in' do
-      expect(journey.entry_station).to eq(entry_station)
+      expect(journey.touch_in(entry_station)).to eq(entry_station)
     end
   end
 
@@ -71,7 +71,9 @@ describe Journey do
   describe '#in_journey?' do
     let(:station){ double :station }
     it 'should return the value of in_journey instance variable' do
-      expect(subject.in_journey?).to eq(true)
+      #journey.touch_in(station)
+      #journey.touch_out(station)
+      expect(journey.in_journey?).to be false
     end
   end
 

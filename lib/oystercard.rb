@@ -1,4 +1,4 @@
-#require 'journey'
+require_relative '../lib/journey'
 
 class Oystercard
 attr_accessor :balance
@@ -16,7 +16,7 @@ $PENALTY_FARE = 6
   end
 
   def new_journey(entry_station)
-    Journey.new(self, entry_station)
+    Journey.new(self)
   end
 
   def transaction(amount)
