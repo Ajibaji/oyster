@@ -25,20 +25,24 @@ describe Journey do
   end
 
   describe '#touch_out' do
+    before(:each) do
+        journey.touch_in(entry_station)
+    end
 
-    it 'should return nil if oystercard is touched out' do
+    it 'should return false if oystercard is touched out' do
       journey.touch_out(exit_station)
       expect(journey.in_journey).to eq(false)
     end
 
-    it 'should deduct MIN_FARE from balance and return balance' do
-      expect { journey.touch_out(exit_station) }.to change{card.balance}.by(-1)
+    it 'should deduct fare from balance and return balance' do
+      journey.touch_out(exit_station)
+      expect { journey.touch_out(exit_station) }.to change{card.balance}.by(-journey.fare)
     end
 
-    it 'should set @in_journey to nil once touched out' do
-      journey.touch_out(exit_station)
-      expect(journey.entry_station).to be_nil
-    end
+    # it 'should set @in_journey to nil once touched out' do
+    #   journey.touch_out(exit_station)
+    #   expect(journey.entry_station).to be_nil
+    # end
 
     it 'should store journey in a hash on touch_out' do
       journey.touch_out(exit_station)
@@ -49,10 +53,17 @@ describe Journey do
 
   describe '#fare' do
     it 'should return MIN_FARE if entry and exit_station != nil' do
+      journey.touch_in(entry_station)
       journey.touch_out(exit_station)
       expect(journey.fare).to eq($MIN_FARE)
     end
     it 'should return PENALTY_FARE' do
+      journey.touch_in(entry_station)
+      expect(journey.fare).to eq($PENALTY_FARE)
+    end
+    it 'should return PENALTY_FARE' do
+      # journey.entry_station != nil
+      journey.touch_out(exit_station)
       expect(journey.fare).to eq($PENALTY_FARE)
     end
   end
